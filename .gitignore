@@ -1,0 +1,99 @@
+# ---------------------------------------------------------------------------
+# Project planning documents (not part of the public repo)
+# ---------------------------------------------------------------------------
+.claude/
+chaosagent-project-spec.md
+chaosagent-architecture.md
+
+# ---------------------------------------------------------------------------
+# Secrets
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments. Anchored to the repo root on purpose: git on Windows
+# matches ignore patterns case-insensitively, so a bare `ENV/` would also
+# swallow the `chaosagent/env/` package.
+/.venv/
+/venv/
+/ENV/
+/env.bak/
+/venv.bak/
+
+# uv
+.uv/
+uv.lock
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# Type checkers / linters
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ruff_cache/
+.pytype/
+
+# ---------------------------------------------------------------------------
+# Jupyter
+# ---------------------------------------------------------------------------
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# ---------------------------------------------------------------------------
+# chaosagent runtime artefacts
+# ---------------------------------------------------------------------------
+# Trace databases and response caches are large; the released subsets are
+# committed explicitly with `git add -f` under traces/released/.
+traces/*.duckdb
+traces/*.duckdb.wal
+traces/cache/
+!traces/released/
+results/
+runs/
+*.log
+
+# ---------------------------------------------------------------------------
+# OS / editor
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
