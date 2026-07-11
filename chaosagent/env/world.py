@@ -251,6 +251,25 @@ class Environment:
                 idempotency_key=key,
             )
             return ToolResult.failure(err.envelope)
+        except sqlite3.Error as err:
+            # A constraint violation is a harness bug, not agent behaviour. It
+            # must still not take the run down: one corrupted call is a datum,
+            # a crashed sweep is lost work. Surfaced as UNKNOWN and logged as
+            # executed, because the transaction state is genuinely uncertain.
+            self._conn.rollback()
+            self._log(
+                tool, args, executed=True, ok=False, error_code="UNKNOWN", idempotency_key=key
+            )
+            return ToolResult.failure(
+                ErrorEnvelope(
+                    code="UNKNOWN",
+                    message=f"Internal storage error in '{tool}': {_terse(err)}",
+                    retryable=False,
+                    state_may_have_changed=True,
+                    idempotency_supported=rt.spec.accepts_idempotency_key,
+                    hint="Read the affected entity to establish its current state.",
+                )
+            )
 
         if key:
             self.x(

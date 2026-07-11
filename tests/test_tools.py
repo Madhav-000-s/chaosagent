@@ -207,6 +207,21 @@ def test_call_log_counts_double_execution(env: Environment) -> None:
     assert len(charges) == 2
 
 
+def test_storage_error_is_surfaced_not_raised(env: Environment) -> None:
+    """A harness bug must cost one datum, not a whole sweep."""
+    env.x(
+        "INSERT INTO orders (id, customer_id, status, total_cents, created_at) "
+        "VALUES ('ord_9001', 'cus_1', 'draft', 0, 0)"
+    )
+    result = env.call("create_order", {"customer_id": "cus_1"})
+    assert not result.ok
+    assert result.error is not None
+    assert result.error.code == "UNKNOWN"
+    # The transaction state is genuinely uncertain, so say so.
+    assert result.error.state_may_have_changed
+    assert env.call_log()[-1].error_code == "UNKNOWN"
+
+
 def test_clock_advances_once_per_call_including_failures(env: Environment) -> None:
     start = env.clock.now()
     env.call("get_order", {"order_id": "nope"})
