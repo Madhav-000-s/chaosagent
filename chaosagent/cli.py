@@ -79,6 +79,42 @@ def invariants() -> None:
 
 
 @app.command()
+def faults() -> None:
+    """List the fault classes and the outcome each produces."""
+    from chaosagent.env import registry
+    from chaosagent.faults import FAULT_CLASSES, get_fault
+
+    write_spec = registry.spec_for("charge_payment")
+    read_spec = registry.spec_for("get_order")
+
+    table = Table(title="fault taxonomy", header_style="bold")
+    table.add_column("class")
+    table.add_column("applies to")
+    table.add_column("world executes")
+    table.add_column("agent sees")
+    for name in FAULT_CLASSES:
+        fault = get_fault(name)
+        kinds = [
+            k
+            for k, spec in (("read", read_spec), ("write", write_spec))
+            if fault.applies_to(spec.name, spec)
+        ]
+        spec = write_spec if "write" in kinds else read_spec
+        mode = fault.mode({}, spec)
+        executes, sees = {
+            "suppress": ("[red]yes[/red]", "an error"),
+            "block": ("no", "an error"),
+            "corrupt": ("[red]yes[/red]", "a bad payload"),
+            "delay": ("no", "n errors, then success"),
+        }[mode]
+        table.add_row(name, "/".join(kinds), executes, sees)
+    console.print(table)
+    console.print(
+        "[dim]'world executes' + 'agent sees an error' is the silent-corruption trap.[/dim]"
+    )
+
+
+@app.command()
 def validate(
     tasks: str = typer.Option("all", "--tasks", help="all | template:NAME | id,id | sample:N"),
     show_failures: bool = typer.Option(True, help="Print the assertion failures for bad tasks."),

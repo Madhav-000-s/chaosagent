@@ -74,17 +74,23 @@ class ErrorEnvelope(BaseModel):
         return f"Error: {self.message}"
 
 
+#: What a tool can hand back. `str` is here for the `malformed` fault, which
+#: returns a response truncated mid-JSON — a string is the only honest
+#: representation of a payload that never finished serialising.
+Payload = dict[str, Any] | list[Any] | str | None
+
+
 class ToolResult(BaseModel):
     """Uniform return shape for every tool call, successful or not."""
 
     model_config = ConfigDict(frozen=True)
 
     ok: bool
-    payload: dict[str, Any] | list[Any] | None = None
+    payload: Payload = None
     error: ErrorEnvelope | None = None
 
     @classmethod
-    def success(cls, payload: dict[str, Any] | list[Any] | None) -> ToolResult:
+    def success(cls, payload: Payload) -> ToolResult:
         return cls(ok=True, payload=payload, error=None)
 
     @classmethod
@@ -250,6 +256,7 @@ __all__ = [
     "InvariantViolation",
     "LineSeed",
     "OrderSeed",
+    "Payload",
     "ProductSeed",
     "ToolResult",
     "ToolSpec",
