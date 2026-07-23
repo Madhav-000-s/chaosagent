@@ -1,0 +1,29 @@
+# E4 — model sweep. Does capability substitute for structure?
+#
+# The one experiment that spends real money, and the one whose answer is the
+# strongest single sentence available: if the frontier model still
+# double-charges under partial_write, capability does not substitute for an
+# idempotency key.
+#
+# The two fault classes are chosen, not sampled: partial_write is the pure
+# double-execution trap, stale is the pure detection problem. They fail for
+# different reasons, so a model that improves on one and not the other is
+# informative rather than noise.
+#
+# NOTE ON A CONFOUND, stated because it cannot be removed: the three tiers do
+# not accept the same request body. Haiku 4.5 has no adaptive thinking and no
+# effort parameter; Sonnet 5 and Opus 5 have thinking on by default and it
+# cannot be cleanly disabled on Opus 5 without triggering documented failure
+# modes. The thinking-capable arms therefore run at the lowest effort setting,
+# and the comparison is between models *as they are actually deployed* rather
+# than between models holding reasoning budget fixed. See docs/LIMITATIONS.md.
+name: e4_models
+configs: [naive, reflect, guarded]
+faults:  [partial_write, stale]
+tasks:   sample:1
+seeds:   [1]
+models:  [claude-haiku-4-5, claude-sonnet-5, claude-opus-5]
+schedule: random
+concurrency: 3
+budget:  {max_calls: 30, max_usd: 0.20, max_steps: 20, max_tokens: 40000}
+max_usd_total: 2.00

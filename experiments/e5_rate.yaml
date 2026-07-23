@@ -1,0 +1,18 @@
+# E5 — rate sweep. Does the gap widen with fault density?
+#
+# Stochastic injection at p in {0.05, 0.15, 0.3}, so faults compound within a
+# single trajectory rather than arriving one at a time. If `guarded` only wins
+# on isolated faults, that shows up here as the curves converging; if the gap
+# widens, the structural guards are doing more work as conditions worsen, which
+# is the regime production actually lives in.
+name: e5_rate
+configs: [naive, guarded]
+faults:  [partial_write]
+tasks:   sample:2
+seeds:   [1]
+model:   claude-haiku-4-5
+schedule: stochastic
+rates:   [0.05, 0.15, 0.3]
+concurrency: 4
+budget:  {max_calls: 30, max_usd: 0.05, max_steps: 20, max_tokens: 40000}
+max_usd_total: 0.60

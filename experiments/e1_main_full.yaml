@@ -1,0 +1,21 @@
+# E1 — the main grid at full width, exactly as designed.
+#
+# 6 configs x 9 faults x 50 tasks x 3 seeds = 8,100 runs.
+# At roughly 7 LLM turns per run on Haiku 4.5 this costs on the order of $250.
+# It is committed so the design is legible and so anyone with the budget can
+# run it; `e1_main.yaml` is the reduced default.
+#
+# The cost ceiling below is deliberately generous. The orchestrator aborts the
+# sweep -- not the process -- when it is reached, and the run is resumable, so
+# this can be executed in affordable instalments.
+name: e1_main_full
+configs: [naive, retry, reflect, contract, guarded, oracle]
+faults:  [timeout, malformed, stale, partial_write,
+          wrong_type, silent_empty, rate_limit, flaky, none]
+tasks:   all
+seeds:   [1, 2, 3]
+model:   claude-haiku-4-5
+schedule: random
+concurrency: 8
+budget:  {max_calls: 30, max_usd: 0.05, max_steps: 20, max_tokens: 40000}
+max_usd_total: 300.00

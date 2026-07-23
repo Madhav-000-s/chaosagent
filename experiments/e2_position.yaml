@@ -1,0 +1,20 @@
+# E2 — position sweep. Does *where* the fault lands matter?
+#
+# Intuition says a fault on the last call is recoverable and one on the first is
+# catastrophic. The opposite may be true: an early fault leaves room to re-plan,
+# a late one lands after the damage is already committed. This is the experiment
+# that settles it.
+#
+# Position is normalised against each task's optimal trajectory length, so
+# "early" means the same thing on a 4-call task and a 7-call one.
+name: e2_position
+configs: [naive, contract, guarded]
+faults:  [timeout, partial_write, stale, malformed]
+tasks:   sample:1
+seeds:   [1]
+model:   claude-haiku-4-5
+schedule: position
+positions: [early, mid, late]
+concurrency: 4
+budget:  {max_calls: 30, max_usd: 0.05, max_steps: 20, max_tokens: 40000}
+max_usd_total: 1.20

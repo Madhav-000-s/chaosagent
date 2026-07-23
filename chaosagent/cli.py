@@ -198,6 +198,197 @@ def tasks_cmd(
 
 
 @app.command()
+def configs() -> None:
+    """Show the agent configurations and the decomposition table."""
+    from chaosagent.agents.configs import CONFIGS
+
+    table = Table(title="agent configurations", header_style="bold")
+    table.add_column("config")
+    table.add_column("error format")
+    table.add_column("retry")
+    table.add_column("reflect")
+    table.add_column("contract")
+    table.add_column("verify read")
+    table.add_column("idem. key")
+    for config in CONFIGS.values():
+        policy = config.recovery_policy
+        tick = "[green]yes[/green]"
+        table.add_row(
+            config.name,
+            config.error_formatter.name,
+            str(policy.blind_retry) if policy.blind_retry else "-",
+            tick if policy.reflect else "-",
+            tick if policy.contract_aware else "-",
+            tick if policy.verify_read else "-",
+            tick if config.call_decorator.name != "identity" else "-",
+        )
+    console.print(table)
+    console.print("[dim]All eight share one ReAct loop; only these objects differ.[/dim]")
+
+
+def _load_env_file() -> None:
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv()
+    except ImportError:  # pragma: no cover
+        pass
+
+
+@app.command()
+def run(
+    config: str = typer.Option("naive", help="Agent configuration."),
+    fault: str = typer.Option("none", help="Fault class, or 'none' for the control arm."),
+    tasks: str = typer.Option("sample:1", help="all | template:NAME | id,id | sample:N"),
+    seeds: int = typer.Option(1, help="Number of seeds, starting at 1."),
+    model: str = typer.Option("claude-haiku-4-5", help="Model id."),
+    target: str = typer.Option("random", help="random | call_index:N | tool:NAME | position:early"),
+    experiment: str = typer.Option("adhoc", help="Experiment label recorded in the trace."),
+    offline: bool = typer.Option(False, help="Cache only; never call the API."),
+    db: str = typer.Option(None, help="Trace database path."),
+) -> None:
+    """Run one cell of the grid, or a small set of them."""
+    import asyncio
+
+    from chaosagent.runtime.cache import ResponseCache
+    from chaosagent.runtime.orchestrator import Experiment, run_experiment
+    from chaosagent.runtime.trace import DEFAULT_DB, TraceWriter
+    from chaosagent.runtime.types import Budget
+
+    _load_env_file()
+    exp = Experiment(
+        name=experiment,
+        configs=[config],
+        faults=[fault],
+        tasks=tasks,
+        seeds=list(range(1, seeds + 1)),
+        models=[model],
+        budget=Budget(),
+        max_usd_total=1.0,
+        # `random` is the default schedule; anything else is aimed explicitly.
+        explicit_target=None if target == "random" else target,
+    )
+
+    with TraceWriter(db or DEFAULT_DB) as trace:
+        report = asyncio.run(
+            run_experiment(
+                exp,
+                trace=trace,
+                cache=ResponseCache(),
+                offline=offline,
+                progress=lambda line: console.print(f"  {line}"),
+            )
+        )
+    console.print(report.summary())
+
+
+@app.command()
+def sweep(
+    experiment: str = typer.Argument(..., help="Path to an experiment yaml, or its name."),
+    offline: bool = typer.Option(False, help="Cache only; never call the API."),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Show the plan and exit."),
+    limit: int = typer.Option(None, help="Cap the number of runs (smoke testing)."),
+    db: str = typer.Option(None, help="Trace database path."),
+) -> None:
+    """Run a full experiment. Resumable, cost-bounded, safe to interrupt."""
+    import asyncio
+    from pathlib import Path
+
+    from chaosagent.runtime.cache import ResponseCache
+    from chaosagent.runtime.orchestrator import Experiment, run_experiment
+    from chaosagent.runtime.trace import DEFAULT_DB, TraceWriter
+
+    _load_env_file()
+    path = Path(experiment)
+    if not path.exists():
+        candidates = sorted(Path("experiments").glob(f"{experiment}*.yaml"))
+        if not candidates:
+            console.print(f"[red]no experiment matching '{experiment}'[/red]")
+            raise typer.Exit(code=1)
+        path = candidates[0]
+
+    exp = Experiment.from_yaml(path)
+    console.print(
+        f"[bold]{exp.name}[/bold] · {len(exp.cells())} cells · "
+        f"models {', '.join(exp.models)} · ceiling ${exp.max_usd_total:.2f}"
+    )
+
+    with TraceWriter(db or DEFAULT_DB) as trace:
+        report = asyncio.run(
+            run_experiment(
+                exp,
+                trace=trace,
+                cache=ResponseCache(),
+                offline=offline,
+                dry_run=dry_run,
+                limit=limit,
+                progress=None if dry_run else (lambda line: console.print(f"  {line}")),
+            )
+        )
+    if dry_run:
+        console.print(
+            f"[dim]planned {report.planned} · {report.skipped} already recorded · "
+            f"${report.usd:.4f} already spent[/dim]"
+        )
+        return
+    console.print(report.summary())
+
+
+@app.command()
+def replay(
+    run_id: str = typer.Argument(..., help="Run id to inspect."),
+    db: str = typer.Option(None, help="Trace database path."),
+) -> None:
+    """Show a recorded run: what executed, what the agent saw, how it ended."""
+    from chaosagent.runtime.trace import DEFAULT_DB, connect
+
+    conn = connect(db or DEFAULT_DB, read_only=True)
+    row = conn.execute(
+        "SELECT task_id, config, model, fault_class, claimed_success, state_correct, "
+        "stop_reason, invariants_broken, assertion_failures, usd, trajectory_len, optimal_len "
+        "FROM runs WHERE run_id = ?",
+        [run_id],
+    ).fetchone()
+    if row is None:
+        console.print(f"[red]no run '{run_id}'[/red]")
+        raise typer.Exit(code=1)
+
+    (task, cfg, model, fault, claimed, correct, stop, broken, failures, usd, tlen, olen) = row
+    verdict = (
+        "[red]SILENT CORRUPTION[/red]"
+        if claimed and not correct
+        else ("[green]recovered[/green]" if correct else "reported failure")
+    )
+    console.print(
+        f"[bold]{run_id}[/bold]  {task} · {cfg} · {model} · fault={fault or 'none'}\n"
+        f"claimed_success={claimed}  state_correct={correct}  → {verdict}\n"
+        f"stop={stop}  invariants_broken={broken}  calls={tlen}/{olen} optimal  ${usd:.4f}"
+    )
+    if failures and failures != "[]":
+        console.print(f"[yellow]assertion failures:[/yellow] {failures}")
+
+    table = Table(title="tool calls", header_style="bold")
+    for col in ("#", "tool", "fault", "world executed", "agent saw error"):
+        table.add_column(col)
+    for c in conn.execute(
+        "SELECT call_index, tool, fault_applied, env_executed, agent_saw_error "
+        "FROM calls WHERE run_id = ? ORDER BY call_index",
+        [run_id],
+    ).fetchall():
+        trap = c[3] and c[4]
+        table.add_row(
+            str(c[0]),
+            c[1],
+            c[2] or "-",
+            ("[red]yes[/red]" if trap else "yes") if c[3] else "no",
+            ("[red]yes[/red]" if trap else "yes") if c[4] else "no",
+        )
+    console.print(table)
+    console.print("[dim]red = world executed AND agent saw an error: the trap.[/dim]")
+    conn.close()
+
+
+@app.command()
 def schema(
     out: str = typer.Option(None, "--out", help="Write to this path instead of stdout."),
 ) -> None:

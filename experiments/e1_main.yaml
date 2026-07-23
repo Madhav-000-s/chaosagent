@@ -1,0 +1,22 @@
+# E1 — the main grid. Produces the silent-corruption heatmap.
+#
+# REDUCED GRID. The full design (see e1_main_full.yaml) is
+# 6 configs x 9 faults x 50 tasks x 3 seeds = 8,100 runs, roughly $250 on
+# Haiku 4.5. This variant holds the two axes the headline figure is plotted
+# over -- config and fault class -- at full width and cuts tasks and seeds,
+# because a missing fault column would leave a hole in the figure whereas
+# fewer tasks only widens the confidence interval.
+#
+# `sample:2` is a stratified draw: deterministic, and spread across templates
+# rather than taking the first two tasks of one family.
+name: e1_main
+configs: [naive, retry, reflect, contract, guarded, oracle]
+faults:  [timeout, malformed, stale, partial_write,
+          wrong_type, silent_empty, rate_limit, flaky, none]
+tasks:   sample:2
+seeds:   [1]
+model:   claude-haiku-4-5
+schedule: random
+concurrency: 4
+budget:  {max_calls: 30, max_usd: 0.05, max_steps: 20, max_tokens: 40000}
+max_usd_total: 4.00

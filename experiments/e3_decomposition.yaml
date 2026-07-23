@@ -1,0 +1,27 @@
+# E3 — guard decomposition. The actual contribution.
+#
+# `guarded` bundles three mechanisms. This ablates them independently so the
+# result is an attribution table rather than a slogan:
+#
+#   arm              | contract | idem. key | verify read
+#   -----------------|----------|-----------|------------
+#   contract         |    x     |           |
+#   contract+idem    |    x     |     x     |
+#   contract+verify  |    x     |           |      x
+#   guarded          |    x     |     x     |      x
+#
+# The expected shape is an interaction, not a main effect: idempotency keys
+# should dominate on partial_write and timeout (where the write landed and the
+# agent doesn't know), verification reads on stale (where the payload lied).
+# If instead one mechanism wins everywhere, the bundle was never three things.
+name: e3_decomposition
+configs: [contract, contract+idem, contract+verify, guarded]
+faults:  [timeout, malformed, stale, partial_write,
+          wrong_type, silent_empty, rate_limit, flaky]
+tasks:   sample:1
+seeds:   [1]
+model:   claude-haiku-4-5
+schedule: random
+concurrency: 4
+budget:  {max_calls: 30, max_usd: 0.05, max_steps: 20, max_tokens: 40000}
+max_usd_total: 1.20
