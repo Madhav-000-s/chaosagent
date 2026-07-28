@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "Cancelled ord_1 (stock released), reserved ord_2, and verified a single $258.00 charge on ord_2 which is now paid.\n\nRESULT: SUCCESS", "tokens_in": 4862, "tokens_out": 61, "tool_calls": []}

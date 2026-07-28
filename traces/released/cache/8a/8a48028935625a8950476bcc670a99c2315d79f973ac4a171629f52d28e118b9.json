@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! The charge did go through successfully despite the connection error. The order has been charged 15,300 cents. Let me verify the order status is now \"paid\":", "tokens_in": 4525, "tokens_out": 94, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01LPzi4ayQ8eBioVkaB55LLM", "name": "get_order"}]}

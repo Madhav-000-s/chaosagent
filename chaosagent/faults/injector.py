@@ -140,6 +140,7 @@ class FaultyEnvironment:
 
         if mode in ("corrupt", "suppress"):
             real = self._execute(call)
+            executed, _replay = self.env.last_call_mutated()
             if not real.ok:
                 # A genuine refusal. Pass it through and stay armed.
                 self._record(
@@ -150,16 +151,16 @@ class FaultyEnvironment:
             outcome = fault.apply(call, self.env, self._rng, ctx)
             if isinstance(outcome, PassThrough):
                 self._record(
-                    call.call_index, call.tool, call.args, real, executed=True, fault=None
+                    call.call_index, call.tool, call.args, real, executed=executed, fault=None
                 )
                 return real
             if isinstance(outcome, CorruptResult):
                 result = ToolResult.success(outcome.payload)
-                self._finish(call, result, outcome, executed=True, agent_saw_error=False)
+                self._finish(call, result, outcome, executed=executed, agent_saw_error=False)
                 return result
             if isinstance(outcome, SuppressResult):
                 result = ToolResult.failure(outcome.error)
-                self._finish(call, result, outcome, executed=True, agent_saw_error=True)
+                self._finish(call, result, outcome, executed=executed, agent_saw_error=True)
                 return result
             raise AssertionError(f"{fault.name} declared mode={mode} but returned {outcome!r}")
 
@@ -190,13 +191,18 @@ class FaultyEnvironment:
 
     def _plain(self, call: PendingCall) -> ToolResult:
         result = self._execute(call)
+        # Ground truth, not `result.ok`. An idempotency-key replay succeeds and
+        # returns the original payload while executing nothing; recording it as
+        # an execution would invent a double execution that never happened.
+        executed, replay = self.env.last_call_mutated()
         self._record(
             call.call_index,
             call.tool,
             call.args,
             result,
-            executed=result.ok,
+            executed=executed,
             fault=None,
+            idempotent_replay=replay,
         )
         return result
 
@@ -243,6 +249,7 @@ class FaultyEnvironment:
         fault: str | None,
         record: InjectionRecord | None = None,
         agent_saw_error: bool | None = None,
+        idempotent_replay: bool = False,
     ) -> None:
         if record is not None:
             self._records.append(record)
@@ -258,6 +265,7 @@ class FaultyEnvironment:
                 fault_applied=fault,
                 idempotency_key=key if isinstance(key, str) else None,
                 injection=record,
+                extra={"idempotent_replay": idempotent_replay},
             )
         )
 

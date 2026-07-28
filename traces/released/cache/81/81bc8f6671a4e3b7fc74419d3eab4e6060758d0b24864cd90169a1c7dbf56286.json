@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "I see that ord_2 doesn't exist or is not available. Let me check if it exists by listing orders for the customer:", "tokens_in": 3428, "tokens_out": 87, "tool_calls": [{"args": {"customer_id": "cus_1"}, "id": "toolu_01C88ek7WeHmf5X6B3gQXnbp", "name": "list_orders"}]}

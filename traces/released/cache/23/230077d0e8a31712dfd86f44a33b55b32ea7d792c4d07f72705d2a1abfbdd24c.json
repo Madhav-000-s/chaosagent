@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The payment gateway is temporarily unavailable. Let me retry with an idempotency key:", "tokens_in": 4612, "tokens_out": 126, "tool_calls": [{"args": {"amount_cents": 15300, "idempotency_key": "ord_1_charge_15300", "order_id": "ord_1"}, "id": "toolu_017dP5zjqunCi5v6Djmsd9TV", "name": "charge_payment"}]}

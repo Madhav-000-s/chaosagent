@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The stock reservation failed because there aren't enough 27-inch monitors available. According to your instructions, I need to cancel the order and charge nothing:", "tokens_in": 3796, "tokens_out": 90, "tool_calls": [{"args": {"order_id": "ord_9001"}, "id": "toolu_013gb33MYf5M1omKBYJD2GEy", "name": "cancel_order"}]}

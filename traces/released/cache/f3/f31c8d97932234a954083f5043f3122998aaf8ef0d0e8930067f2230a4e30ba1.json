@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! The line item was added successfully. The new order total is 15300 cents ($153.00). Now I need to reserve the stock for the entire order and then charge the customer:", "tokens_in": 3970, "tokens_out": 99, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_015RTLmchbMbmmNNWDLecQUZ", "name": "reserve_stock"}]}

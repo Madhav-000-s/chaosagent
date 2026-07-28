@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The payment call executed but the response was corrupted. Let me verify the payment status to confirm the charge was successful.", "tokens_in": 4643, "tokens_out": 84, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01LghDxkQnFqP1a3TQsFp7Hm", "name": "get_payment_status"}]}

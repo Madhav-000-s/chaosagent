@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Great! The order is now in draft status. I can see the total is now shown as 129.0 cents (which is $1.29). Now I'll add the USB-C cables:", "tokens_in": 3394, "tokens_out": 143, "tool_calls": [{"args": {"order_id": "ord_1", "qty": 2, "sku": "SKU-CABL"}, "id": "toolu_014unrLzaQoRYPf85c5SZpVH", "name": "add_line_item"}]}

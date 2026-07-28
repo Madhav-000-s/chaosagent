@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Now I need to release the stock reservation, add the new line item, and then re-reserve the stock. Let me do that:", "tokens_in": 3403, "tokens_out": 86, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01VaAxBLZU1H12WvnZk4xJ6T", "name": "release_stock"}]}

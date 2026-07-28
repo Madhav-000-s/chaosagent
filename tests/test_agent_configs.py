@@ -114,6 +114,67 @@ def test_idempotency_key_makes_blind_retry_safe() -> None:
     assert len([p for p in env.state().payments if p["kind"] == "charge"]) == 1
 
 
+def test_an_idempotent_replay_is_not_recorded_as_an_execution() -> None:
+    """Regression: the double-execution metric asks the world, not the result.
+
+    A key replay *succeeds* and returns the original payload while executing
+    nothing. Recording it from `result.ok` invented a double execution that
+    never happened — and did so specifically for the configurations that got
+    idempotency right, which is the worst possible direction for the bug to run.
+    """
+    env = Environment(seed=1, init_state=base_state())
+    faulty = FaultInjector(FaultSpec(fault_class="none"), seed=1).wrap(env)
+    faulty.call("create_order", {"customer_id": "cus_1"})
+    faulty.call("add_line_item", {"order_id": "ord_9001", "sku": "SKU-CABL", "qty": 1})
+    faulty.call("reserve_stock", {"order_id": "ord_9001"})
+
+    args = {"order_id": "ord_9001", "amount_cents": 1_200, "idempotency_key": "k1"}
+    first = faulty.call("charge_payment", args)
+    second = faulty.call("charge_payment", args)
+
+    assert first.ok and second.ok
+    assert second.payload == first.payload
+    charges = [c for c in faulty.history if c.tool == "charge_payment"]
+    assert charges[0].env_executed is True
+    assert charges[1].env_executed is False, "a key replay is not an execution"
+    assert charges[1].extra["idempotent_replay"] is True
+    assert len(env.state().payments) == 1
+
+
+def test_a_model_supplied_key_is_honoured_the_same_as_a_decorator_one() -> None:
+    """An agent that generates its own key is protected without any config help.
+
+    Observed in the model sweep: Opus 5 populated `idempotency_key` unprompted
+    under the `retry` config, whose decorator is the identity.
+    """
+    env = Environment(seed=1, init_state=base_state())
+    faulty = FaultInjector(
+        FaultSpec(fault_class="partial_write", target="tool:charge_payment"),
+        seed=1,
+        trajectory_hint=5,
+    ).wrap(env)
+    llm = ScriptedLLM(
+        [
+            {"tool": "create_order", "args": {"customer_id": "cus_1"}},
+            {"tool": "add_line_item",
+             "args": {"order_id": "ord_9001", "sku": "SKU-CABL", "qty": 1}},
+            {"tool": "reserve_stock", "args": {"order_id": "ord_9001"}},
+            {"tool": "charge_payment",
+             "args": {"order_id": "ord_9001", "amount_cents": 1_200,
+                      "idempotency_key": "self-generated-1"}},
+            {"text": "Charged.\nRESULT: SUCCESS"},
+        ],
+        retry_on_error=True,
+    )
+    asyncio.run(run_agent(_stub_task(), faulty, llm, get_config("retry"), Budget()))
+
+    executed = [
+        c for c in faulty.history if c.tool == "charge_payment" and c.env_executed
+    ]
+    assert len(executed) == 1
+    assert no_double_charge(env) == []
+
+
 def test_control_arm_completes_cleanly() -> None:
     env, faulty, outcome = _run("naive", "none", retry_on_error=False)
     assert faulty.injected() == []

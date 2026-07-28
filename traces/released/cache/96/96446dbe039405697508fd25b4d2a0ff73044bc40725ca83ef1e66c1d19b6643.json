@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The call executed but the response was dropped. Let me check the current status of the order to see if the stock was released:", "tokens_in": 3655, "tokens_out": 84, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_013kgqbuEKYSTGvC2tu9GshG", "name": "get_order"}]}

@@ -118,6 +118,7 @@ def _call_rows(faulty: Any) -> list[dict[str, Any]]:
                 "fault_outcome": call.injection.outcome if call.injection else None,
                 "env_executed": call.env_executed,
                 "agent_saw_error": call.agent_saw_error,
+                "idempotent_replay": bool(call.extra.get("idempotent_replay", False)),
                 "payload_json": json.dumps(payload, default=str)[:4000]
                 if payload is not None
                 else None,

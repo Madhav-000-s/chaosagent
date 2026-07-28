@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The search didn't find the product. Let me try searching without the hyphen to see if the SKU format is different:", "tokens_in": 3352, "tokens_out": 82, "tool_calls": [{"args": {"query": "CABL"}, "id": "toolu_01GWK5j7xEFJ379DJkgfGpcd", "name": "search_products"}]}

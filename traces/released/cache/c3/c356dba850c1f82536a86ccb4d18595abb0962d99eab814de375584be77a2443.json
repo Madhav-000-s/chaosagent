@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Let me retry the release_stock call:", "tokens_in": 3569, "tokens_out": 67, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01VyjVSX2ojZ2A2FMC9VbfSL", "name": "release_stock"}]}

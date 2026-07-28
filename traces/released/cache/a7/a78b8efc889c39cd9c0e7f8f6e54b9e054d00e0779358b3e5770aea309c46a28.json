@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! Order created. Now let me add 2 Mechanical Keyboards to it:", "tokens_in": 3136, "tokens_out": 120, "tool_calls": [{"args": {"order_id": "ord_9001", "qty": 2, "sku": "SKU-KEYB"}, "id": "toolu_0116SpzaJcgMr1eYnKZMq6gq", "name": "add_line_item"}]}

@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Good! The stock was released and the order is now in 'draft' status. Now I can add the new line item:", "tokens_in": 3914, "tokens_out": 127, "tool_calls": [{"args": {"order_id": "ord_1", "qty": 2, "sku": "SKU-CABL"}, "id": "toolu_01XcdLLqx4Uyn8hzHaweMYfL", "name": "add_line_item"}]}

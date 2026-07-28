@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Let me retry the reserve_stock call:", "tokens_in": 3851, "tokens_out": 94, "tool_calls": [{"args": {"idempotency_key": "reserve_ord1_cables", "order_id": "ord_1"}, "id": "toolu_01Wf37y1m7StsQKbPS14VsuV", "name": "reserve_stock"}]}

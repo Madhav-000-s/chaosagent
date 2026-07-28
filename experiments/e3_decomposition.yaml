@@ -14,11 +14,17 @@
 # should dominate on partial_write and timeout (where the write landed and the
 # agent doesn't know), verification reads on stale (where the payload lied).
 # If instead one mechanism wins everywhere, the bundle was never three things.
+#
+# Targeted at `charge_payment` for the same reason E6 is: attribution only means
+# something where the mechanisms actually bite. At a random position most faults
+# land on a recoverable call and all four arms look identical, which measures
+# the schedule rather than the guards.
 name: e3_decomposition
 configs: [contract, contract+idem, contract+verify, guarded]
 faults:  [timeout, malformed, stale, partial_write,
           wrong_type, silent_empty, rate_limit, flaky]
-tasks:   sample:1
+target:  tool:charge_payment
+tasks:   sample:2
 seeds:   [1]
 model:   claude-haiku-4-5
 schedule: random

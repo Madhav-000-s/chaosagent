@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "I'll help you add the USB-C cables to Ada Byron's order and complete the payment process. Let me start by getting the current order details to understand what we're working with.", "tokens_in": 3038, "tokens_out": 96, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01Arf7ksVxYrdrbwVFoYfyfx", "name": "get_order"}]}

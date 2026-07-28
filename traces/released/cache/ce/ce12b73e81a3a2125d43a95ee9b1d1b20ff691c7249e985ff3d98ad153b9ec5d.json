@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "", "tokens_in": 3833, "tokens_out": 86, "tool_calls": [{"args": {"idempotency_key": "cancel-ord1", "order_id": "ord_1"}, "id": "toolu_013dUAeyVu7VjzuTfXBnLbnJ", "name": "cancel_order"}]}

@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Good! ord_1 is now cancelled and its stock is released. Now let me reserve stock for ord_2 and charge it.", "tokens_in": 3561, "tokens_out": 113, "tool_calls": [{"args": {"idempotency_key": "reserve_ord_2", "order_id": "ord_2"}, "id": "toolu_01FwgbCXHJkHKCwZwAxJ3CWu", "name": "reserve_stock"}]}

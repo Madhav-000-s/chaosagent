@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! ord_1 is now cancelled and its stock is released. Now I'll reserve the stock for ord_2:", "tokens_in": 3836, "tokens_out": 84, "tool_calls": [{"args": {"order_id": "ord_2"}, "id": "toolu_018jJv44vQuqY35TfKeargC3", "name": "reserve_stock"}]}

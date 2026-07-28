@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Good! ord_1 is now cancelled and stock is released. I can see that ord_2 already exists for Ada Byron. Let me get the details of ord_2 to reserve its stock and charge it.", "tokens_in": 3587, "tokens_out": 104, "tool_calls": [{"args": {"order_id": "ord_2"}, "id": "toolu_01JPfTKaFYaRHBoCoYng6SHR", "name": "get_order"}]}

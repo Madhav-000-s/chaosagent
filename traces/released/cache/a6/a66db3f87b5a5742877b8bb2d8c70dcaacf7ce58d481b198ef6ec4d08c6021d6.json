@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "The charge was successfully applied despite the timeout, confirmed via payment status showing net_paid_cents 25800. ord_1 was cancelled, ord_2 reserved and paid in full.\n\nRESULT: SUCCESS", "tokens_in": 5260, "tokens_out": 76, "tool_calls": []}

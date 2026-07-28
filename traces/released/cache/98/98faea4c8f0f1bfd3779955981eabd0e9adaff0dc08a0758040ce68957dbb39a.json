@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The release stock call timed out but may have executed. Let me check the order status to see if the stock was actually released.", "tokens_in": 3658, "tokens_out": 85, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01XSdWNhw22czA3fXdTJdQgm", "name": "get_order"}]}

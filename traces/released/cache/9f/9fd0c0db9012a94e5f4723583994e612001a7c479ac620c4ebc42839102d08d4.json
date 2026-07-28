@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "It appears the order is now in draft status. Let me add the new line item and then re-reserve the stock:", "tokens_in": 3335, "tokens_out": 154, "tool_calls": [{"args": {"idempotency_key": "add_cabl_ord_1", "order_id": "ord_1", "qty": 2, "sku": "SKU-CABL"}, "id": "toolu_018tFrpoYu1QuMxsBJHRYa3d", "name": "add_line_item"}]}

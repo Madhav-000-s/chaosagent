@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Great! Ada Byron does have ord_2. Let me fetch it again:", "tokens_in": 3687, "tokens_out": 74, "tool_calls": [{"args": {"order_id": "ord_2"}, "id": "toolu_01RVJ6iC7BDZar4YprXBvNNz", "name": "get_order"}]}

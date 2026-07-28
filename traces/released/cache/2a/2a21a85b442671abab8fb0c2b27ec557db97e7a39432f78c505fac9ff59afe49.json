@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The response was corrupted, but the call did execute. Let me verify the order status by reading it again.", "tokens_in": 3574, "tokens_out": 81, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_0141TsjeKCpCS6bzAkUdtZuV", "name": "get_order"}]}

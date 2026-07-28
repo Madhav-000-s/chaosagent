@@ -63,6 +63,11 @@ CREATE TABLE IF NOT EXISTS calls (
     fault_outcome     VARCHAR,
     env_executed      BOOLEAN,        -- did the world actually mutate
     agent_saw_error   BOOLEAN,        -- what the agent observed
+    -- True when an idempotency key short-circuited a repeat. Such a call
+    -- SUCCEEDS and returns the original payload while executing nothing, so it
+    -- must not be counted as an execution. This column exists because getting
+    -- that wrong invented a double execution that never happened.
+    idempotent_replay BOOLEAN,
     payload_json      VARCHAR,
     PRIMARY KEY (run_id, call_index)
 );
@@ -153,7 +158,10 @@ class TraceWriter:
                 result.model,
                 result.seed,
                 None if spec is None or spec.is_control else spec.fault_class,
-                None if spec is None else spec.target,
+                # The full label, not just `target`: it carries the rate and any
+                # params, without which a stochastic rate sweep is unanalysable
+                # because every arm looks like plain "stochastic".
+                None if spec is None else spec.label(),
                 result.fault_landed,
                 result.fault_position,
                 result.trajectory_len,
@@ -177,7 +185,7 @@ class TraceWriter:
 
         for call in calls:
             self.conn.execute(
-                "INSERT INTO calls VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO calls VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [
                     result.run_id,
                     call["call_index"],
@@ -189,6 +197,7 @@ class TraceWriter:
                     call["fault_outcome"],
                     call["env_executed"],
                     call["agent_saw_error"],
+                    call.get("idempotent_replay", False),
                     call["payload_json"],
                 ],
             )

@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Good! Now I can add the USB-C Cable line item.", "tokens_in": 3258, "tokens_out": 114, "tool_calls": [{"args": {"order_id": "ord_1", "qty": 2, "sku": "SKU-CABL"}, "id": "toolu_01VLbasU2psstrwvCSHDjqZB", "name": "add_line_item"}]}

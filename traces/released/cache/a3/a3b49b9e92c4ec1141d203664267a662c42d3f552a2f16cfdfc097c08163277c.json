@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The release_stock call is temporarily unavailable. Let me retry it:", "tokens_in": 3606, "tokens_out": 99, "tool_calls": [{"args": {"idempotency_key": "release_ord_1", "order_id": "ord_1"}, "id": "toolu_01D3VQrPbrLLLtCNwRkWnbzJ", "name": "release_stock"}]}

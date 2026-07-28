@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! Let me verify the final order status:", "tokens_in": 4539, "tokens_out": 68, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_013QobFVVQk2cdkNWbraPpoG", "name": "get_order"}]}

@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "The charge was actually applied successfully (confirmed via payment status read). Ord_1 was cancelled releasing its stock, ord_2 has been reserved and fully charged $258.00.\n\nRESULT: SUCCESS", "tokens_in": 5258, "tokens_out": 74, "tool_calls": []}

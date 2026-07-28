@@ -77,13 +77,16 @@ dmypy.json
 # ---------------------------------------------------------------------------
 # chaosagent runtime artefacts
 # ---------------------------------------------------------------------------
-# Trace databases and response caches are large; the released subsets are
-# committed explicitly with `git add -f` under traces/released/.
+# The working trace database and response cache are regenerated artefacts. The
+# released subsets under traces/released/ are committed on purpose -- they are
+# what makes the reproducibility claim checkable without an API key.
 traces/*.duckdb
 traces/*.duckdb.wal
 traces/cache/
 !traces/released/
-results/
+
+# results/ IS committed: the figures and tables are the deliverable, and the
+# README links straight to them.
 runs/
 *.log
 

@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# No API key is available to CI, and none is needed. Every gate below runs
+# offline: the environment, the task validator, the fault injector, the scorer,
+# and the agent loop driven by a scripted stand-in for the model.
+env:
+  ANTHROPIC_API_KEY: ""
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install
+        run: uv pip install --system -e ".[dev,run,analysis]"
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Gate 1 — every task is solvable by the reference solver
+        run: chaosagent validate --no-show-failures
+
+      - name: Gate 2 + 3 — determinism, transparency, scoring, agent loop
+        run: pytest -q
+
+      - name: Smoke — report generation from a synthetic trace
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from chaosagent.metrics.report import write_report
+          from chaosagent.metrics.scorer import MetricSuite
+          from chaosagent.runtime.trace import TraceWriter
+          from chaosagent.runtime.types import RunResult
+
+          out = Path("ci-artifacts")
+          with TraceWriter(out / "ci.duckdb") as trace:
+              trace.write_run(
+                  RunResult(
+                      run_id="ci1", experiment="ci", task_id="t", config="naive",
+                      model="claude-haiku-4-5", seed=1, agent_claimed_success=True,
+                      assertion_failures=["wrong"], trajectory_len=6, optimal_len=5,
+                  ),
+                  template="t", claim_explicit=True, calls=[], llm_calls=[],
+              )
+              path, figures = write_report(MetricSuite(trace.conn), "ci", out)
+          assert path.exists(), "report was not written"
+          print("report ok:", path)
+          PY
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-artifacts-py${{ matrix.python-version }}
+          path: ci-artifacts/
+          if-no-files-found: ignore

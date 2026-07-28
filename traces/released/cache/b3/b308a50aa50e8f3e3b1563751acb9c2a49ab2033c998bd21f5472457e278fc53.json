@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "", "tokens_in": 4674, "tokens_out": 97, "tool_calls": [{"args": {"order_id": "ord_2"}, "id": "toolu_01V4rXWqBiRL37d1NfJsSNfQ", "name": "get_payment_status"}]}

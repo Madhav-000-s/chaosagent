@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! Now I'll charge Ada Byron for ord_2. The order total is 25800 cents ($258.00):", "tokens_in": 3942, "tokens_out": 105, "tool_calls": [{"args": {"amount_cents": 25800, "order_id": "ord_2"}, "id": "toolu_01DHDUxdejHBajxHzNFTUiNM", "name": "charge_payment"}]}

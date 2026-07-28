@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The stock reservation failed because there are insufficient monitors available. As instructed, I need to cancel the order instead and charge nothing:", "tokens_in": 4137, "tokens_out": 85, "tool_calls": [{"args": {"order_id": "ord_9001"}, "id": "toolu_013vkt1X87KXD5p5o1phoUfp", "name": "cancel_order"}]}

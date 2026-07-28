@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "I got a timeout error. Let me check the payment status to see if the charge went through:", "tokens_in": 4660, "tokens_out": 80, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01JzHeiTbjxmP2QKNyU5fVrG", "name": "get_payment_status"}]}

@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "The charge actually succeeded despite the timeout \u2014 ord_2 has been charged 25800 cents in full. Cancelled ord_1 to free stock, reserved stock for ord_2, and charged Ada Byron the full order total successfully.\n\nRESULT: SUCCESS", "tokens_in": 4975, "tokens_out": 91, "tool_calls": []}

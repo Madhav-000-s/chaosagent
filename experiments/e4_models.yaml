@@ -17,13 +17,21 @@
 # modes. The thinking-capable arms therefore run at the lowest effort setting,
 # and the comparison is between models *as they are actually deployed* rather
 # than between models holding reasoning budget fixed. See docs/LIMITATIONS.md.
+#
+# `retry` replaces `naive` as the unguarded arm. It is the framework default and,
+# on the small model, the config that actually breaks -- 33% of its runs execute
+# a non-idempotent write twice. Asking "does a frontier model still do that?" is
+# only sharp against the config that does it.
+#
+# Targeted at `charge_payment` for the same reason E3 and E6 are: at a random
+# position most faults land on a recoverable call, and every model looks fine.
 name: e4_models
-configs: [naive, reflect, guarded]
-faults:  [partial_write, stale]
+configs: [retry, naive, reflect, guarded]
+faults:  [partial_write, timeout]
+target:  tool:charge_payment
 tasks:   sample:1
 seeds:   [1]
 models:  [claude-haiku-4-5, claude-sonnet-5, claude-opus-5]
-schedule: random
 concurrency: 3
-budget:  {max_calls: 30, max_usd: 0.20, max_steps: 20, max_tokens: 40000}
-max_usd_total: 2.00
+budget:  {max_calls: 30, max_usd: 0.30, max_steps: 20, max_tokens: 40000}
+max_usd_total: 2.20

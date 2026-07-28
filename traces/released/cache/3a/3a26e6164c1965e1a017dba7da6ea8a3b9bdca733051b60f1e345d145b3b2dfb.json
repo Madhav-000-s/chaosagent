@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! The USB-C cables have been added. The new order total is 15,300 cents ($153.00). Now I need to reserve the stock for all items and then charge the customer:", "tokens_in": 4193, "tokens_out": 101, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01NXYVBzdWEJSzrr2gTAwL93", "name": "reserve_stock"}]}

@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The cancel_order call timed out. Let me retry that operation:", "tokens_in": 3934, "tokens_out": 73, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01B3E9ycreGULUZe1bffwR9J", "name": "cancel_order"}]}

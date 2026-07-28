@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "The charge actually succeeded despite the connection error, so no retry was needed. ord_1 has been cancelled (releasing its stock), and ord_2 is now reserved and fully paid ($258.00) for Ada Byron.\n\nRESULT: SUCCESS", "tokens_in": 4964, "tokens_out": 87, "tool_calls": []}

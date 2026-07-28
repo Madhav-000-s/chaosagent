@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! Despite the timeout message, the charge did go through successfully. Let me verify the final order status:", "tokens_in": 4433, "tokens_out": 80, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01CPAUQJ7iPUmT69pe69uFwf", "name": "get_order"}]}

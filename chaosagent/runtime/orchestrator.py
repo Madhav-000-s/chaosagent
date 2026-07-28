@@ -90,6 +90,7 @@ class Experiment:
             max_usd_total=float(raw.get("max_usd_total", 2.0)),
             concurrency=int(raw.get("concurrency", 4)),
             fault_params=dict(raw.get("fault_params", {})),
+            explicit_target=raw.get("target"),
         )
 
     # -- the grid -----------------------------------------------------------

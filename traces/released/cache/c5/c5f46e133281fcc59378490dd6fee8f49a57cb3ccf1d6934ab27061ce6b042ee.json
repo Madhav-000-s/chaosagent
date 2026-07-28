@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "", "tokens_in": 4374, "tokens_out": 114, "tool_calls": [{"args": {"amount_cents": 25800, "idempotency_key": "ord_2-charge-1", "order_id": "ord_2"}, "id": "toolu_0133GwUpx8HY9CZCx1qzuHsv", "name": "charge_payment"}]}

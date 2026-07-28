@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "I'll help you place this order for Ada Byron. Let me start by creating the order, adding the line items, and then attempting to reserve the stock.", "tokens_in": 2984, "tokens_out": 91, "tool_calls": [{"args": {"customer_id": "cus_1"}, "id": "toolu_01WWaFNsk5jWu1Xa5GSENrQG", "name": "create_order"}]}

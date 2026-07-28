@@ -56,6 +56,10 @@ class Environment:
         self._clock = VirtualClock(EPOCH)
         self._seq = 0
         self._payment_seq = 0
+        # Ground truth about the most recent call, cached so callers do not have
+        # to rebuild the whole log to ask "did that actually mutate anything?".
+        self._last_executed = False
+        self._last_replay = False
         registry._ensure_loaded()
         if init_state is not None:
             self._seed_world(init_state)
@@ -292,6 +296,8 @@ class Environment:
         idempotent_replay: bool = False,
         idempotency_key: str | None = None,
     ) -> None:
+        self._last_executed = executed
+        self._last_replay = idempotent_replay
         self._seq += 1
         self.x(
             "INSERT INTO env_call_log "
@@ -320,6 +326,17 @@ class Environment:
     def _dump(self, table: str) -> list[dict[str, Any]]:
         order = SORT_KEYS[table]
         return [dict(r) for r in self.q(f"SELECT * FROM {table} ORDER BY {order}")]
+
+    def last_call_mutated(self) -> tuple[bool, bool]:
+        """``(executed, idempotent_replay)`` for the most recent call.
+
+        This is the environment's own answer to "did the world actually change?"
+        It is deliberately *not* the same question as "did the call succeed": an
+        idempotency-key replay succeeds and returns the original payload while
+        executing nothing. Anything recording double execution must ask this,
+        not the result.
+        """
+        return self._last_executed, self._last_replay
 
     def call_log(self) -> list[EnvCall]:
         rows = self.q("SELECT * FROM env_call_log ORDER BY seq")

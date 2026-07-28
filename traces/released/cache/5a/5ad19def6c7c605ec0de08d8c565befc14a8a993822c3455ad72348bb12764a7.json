@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "", "tokens_in": 3378, "tokens_out": 122, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01VXXcdSE496RsnuxSQeo4tD", "name": "get_order"}, {"args": {"order_id": "ord_2"}, "id": "toolu_018kN3V6ER4A3EwiNbXsPqDN", "name": "get_order"}]}

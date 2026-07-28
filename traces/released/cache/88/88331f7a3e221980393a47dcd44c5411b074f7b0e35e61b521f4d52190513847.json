@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! Stock is now reserved for ord_2. Now I'll charge Ada Byron (cus_1) for the order total of 25800 cents.", "tokens_in": 3858, "tokens_out": 138, "tool_calls": [{"args": {"amount_cents": 25800, "idempotency_key": "charge_ord_2", "order_id": "ord_2"}, "id": "toolu_01Txnk7TraFbb9HRKJmd9RiA", "name": "charge_payment"}]}

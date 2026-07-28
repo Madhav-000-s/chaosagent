@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Let me retry the payment charge with an idempotency key to ensure safety:", "tokens_in": 4615, "tokens_out": 127, "tool_calls": [{"args": {"amount_cents": 15300, "idempotency_key": "charge_ord_1_15300_v1", "order_id": "ord_1"}, "id": "toolu_01WZDYCuyXXUF6A4W12mpvL1", "name": "charge_payment"}]}

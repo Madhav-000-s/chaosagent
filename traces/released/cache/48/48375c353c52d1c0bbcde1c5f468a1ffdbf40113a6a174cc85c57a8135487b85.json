@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The charge_payment call encountered a connection error. Let me verify the payment status and retry the charge if needed.", "tokens_in": 4023, "tokens_out": 83, "tool_calls": [{"args": {"order_id": "ord_2"}, "id": "toolu_01Dg1ocg89aF3g3PEC9wr3MP", "name": "get_payment_status"}]}

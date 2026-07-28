@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The release_stock call hit a rate limit. I should wait briefly before retrying the same call, then proceed with adding the line item and re-reserving stock.\n\nLet me retry:", "tokens_in": 3276, "tokens_out": 98, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01BfuNM1J2pb7zs7Khvvoy8X", "name": "release_stock"}]}

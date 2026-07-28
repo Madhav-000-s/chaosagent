@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "I'll help you add the items to the order and process the payment. Let me start by getting the current order details so I can see what we're working with.", "tokens_in": 2786, "tokens_out": 92, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01WoGhCYjpvdvxEX4kXNuU64", "name": "get_order"}]}

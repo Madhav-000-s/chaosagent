@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! Stock is now reserved. Now let me charge the customer the exact order total of 25800 cents:", "tokens_in": 3705, "tokens_out": 103, "tool_calls": [{"args": {"amount_cents": 25800, "order_id": "ord_9001"}, "id": "toolu_01CMDMAncm3yJe3ZGfXA5gAr", "name": "charge_payment"}]}

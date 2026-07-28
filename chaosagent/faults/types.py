@@ -57,7 +57,20 @@ class FaultSpec(BaseModel):
         return self.fault_class in (CONTROL, "", "control")
 
     def label(self) -> str:
-        return f"{self.fault_class}@{self.target}"
+        """A label that distinguishes every distinct spec.
+
+        Must include `rate` and `params`, not just class and target. Run ids are
+        hashed from this, and omitting the rate collapsed all three arms of the
+        stochastic rate sweep onto one id, where each silently overwrote the
+        last — twelve runs executed, four recorded.
+        """
+        parts = [f"{self.fault_class}@{self.target}"]
+        if self.rate:
+            parts.append(f"rate={self.rate}")
+        if self.params:
+            rendered = ",".join(f"{k}={self.params[k]}" for k in sorted(self.params))
+            parts.append(f"params({rendered})")
+        return "|".join(parts)
 
 
 @dataclass(frozen=True)

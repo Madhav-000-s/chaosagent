@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "The order (ord_9001) for Ada Byron could not be fulfilled because there was insufficient stock available for the 2x 27-inch Monitors (SKU-MONI). The order has been cancelled without any charges being applied.\n\nRESULT: FAILURE", "tokens_in": 4470, "tokens_out": 60, "tool_calls": []}

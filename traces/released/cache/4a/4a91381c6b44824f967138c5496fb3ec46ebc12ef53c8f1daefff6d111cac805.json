@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The payment gateway is temporarily unavailable. Let me retry the charge:", "tokens_in": 4207, "tokens_out": 92, "tool_calls": [{"args": {"amount_cents": 15300, "order_id": "ord_1"}, "id": "toolu_01URqqybsDHUChyEq3AjTEPW", "name": "charge_payment"}]}

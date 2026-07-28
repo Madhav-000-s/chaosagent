@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "The charge succeeded despite the timeout error. Ord_1 was cancelled to release stock, ord_2 stock was reserved, and the order total of $258.00 was successfully charged to Ada Byron's order ord_2.\n\nRESULT: SUCCESS", "tokens_in": 4795, "tokens_out": 87, "tool_calls": []}

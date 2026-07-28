@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "ord_2 belongs to cus_1 (Ada Byron), good. Proceeding to cancel ord_1, reserve ord_2, then charge.", "tokens_in": 4235, "tokens_out": 105, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01QbNSwGVWw4ngdzE65p96HD", "name": "cancel_order"}]}

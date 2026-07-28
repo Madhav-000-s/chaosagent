@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "The order has been cancelled because insufficient stock was available. Order ord_9001 for Ada Byron could not be fully reserved (SKU-MONI had 0 units available), so per the instructions, it was cancelled without any charge being applied.\n\nRESULT: SUCCESS", "tokens_in": 4230, "tokens_out": 61, "tool_calls": []}

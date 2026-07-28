@@ -1,0 +1,32 @@
+# E6 — the non-idempotent write, isolated.
+#
+# WHY THIS EXPERIMENT EXISTS. E1 injects at a random position, which is the
+# right design for a headline grid but has a consequence that only shows up once
+# you run it: most random positions land on a *recoverable* call. Cancelling an
+# already-cancelled order or releasing already-released stock is harmless, so
+# the money path is rarely the one that breaks, and the silent-corruption signal
+# is correspondingly thin.
+#
+# This is the schedule the design calls "single, targeted at a specific tool ->
+# isolates the non-idempotent-write case". Every fault lands on `charge_payment`,
+# the one call where executing twice takes money from a customer twice. It is
+# not a harder grid for its own sake -- it is the conditional question: *given*
+# that the fault hits a non-idempotent write, what does each configuration do?
+#
+# The four fault classes are chosen rather than sampled:
+#   partial_write  the write landed, the response was lost   -> the pure trap
+#   timeout        may or may not have landed                -> same ambiguity
+#   flaky          definitely did NOT land                   -> the control for
+#                  the two above; retrying here is correct, and a config that
+#                  pays for a verification read is paying for nothing
+#   malformed      the response was garbled but the write landed
+name: e6_nonidempotent
+configs: [naive, retry, reflect, contract, guarded, oracle]
+faults:  [partial_write, timeout, flaky, malformed]
+target:  tool:charge_payment
+tasks:   sample:3
+seeds:   [1]
+model:   claude-haiku-4-5
+concurrency: 4
+budget:  {max_calls: 30, max_usd: 0.05, max_steps: 20, max_tokens: 40000}
+max_usd_total: 2.20

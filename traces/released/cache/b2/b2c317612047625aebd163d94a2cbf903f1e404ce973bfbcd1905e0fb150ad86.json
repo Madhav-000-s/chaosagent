@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Let me retry the search after the rate limit:", "tokens_in": 3458, "tokens_out": 69, "tool_calls": [{"args": {"query": "SKU-CABL"}, "id": "toolu_01PRc1givm5WPGrPacLwwcBh", "name": "search_products"}]}

@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "There was a double charge (net paid 51,600 vs total 25,800), so I need to refund the excess.", "tokens_in": 4919, "tokens_out": 248, "tool_calls": [{"args": {"amount_cents": 25800, "order_id": "ord_2"}, "id": "toolu_01Qc8BWDBJwGKbFBH4AnKnvB", "name": "refund_payment"}]}

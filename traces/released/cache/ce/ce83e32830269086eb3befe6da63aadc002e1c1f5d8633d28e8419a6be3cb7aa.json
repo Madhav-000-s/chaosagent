@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "The order has been cancelled because there was insufficient stock for the 27-inch monitors (SKU-MONI). The order was cancelled without any charge to the customer, as per the instructions.\n\nRESULT: SUCCESS", "tokens_in": 4427, "tokens_out": 49, "tool_calls": []}

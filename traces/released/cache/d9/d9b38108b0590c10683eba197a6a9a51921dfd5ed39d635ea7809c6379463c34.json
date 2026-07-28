@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The payment call failed with an uncertain state. Let me check the current payment status of the order to see if the charge went through:", "tokens_in": 4657, "tokens_out": 87, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01H8iXaM3y6nFh4F5WHSv497", "name": "get_payment_status"}]}

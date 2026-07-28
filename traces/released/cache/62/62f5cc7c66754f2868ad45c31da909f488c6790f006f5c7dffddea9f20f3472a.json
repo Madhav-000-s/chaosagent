@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! The charge did go through successfully. Let me verify the order status is now 'paid':", "tokens_in": 4886, "tokens_out": 79, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01JA1RxgnYGdKQQaCY3PNJED", "name": "get_order"}]}

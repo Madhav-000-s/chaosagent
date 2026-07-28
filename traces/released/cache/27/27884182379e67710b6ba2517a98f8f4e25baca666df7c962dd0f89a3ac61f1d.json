@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "end_turn", "text": "The order could not be completed. Stock reservation failed because there were 0 units available of the 27-inch Monitor (SKU-MONI), so the order has been cancelled as instructed without any charge to the customer.\n\nRESULT: FAILURE", "tokens_in": 4160, "tokens_out": 58, "tool_calls": []}

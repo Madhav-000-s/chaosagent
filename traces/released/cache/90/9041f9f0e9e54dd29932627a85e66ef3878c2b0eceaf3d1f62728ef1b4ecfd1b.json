@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! Now the order is in draft status. Let me add the 2 USB-C cables:", "tokens_in": 3931, "tokens_out": 151, "tool_calls": [{"args": {"idempotency_key": "add_cabl_ord_1", "order_id": "ord_1", "qty": 2, "sku": "SKU-CABL"}, "id": "toolu_01WaUChnpiP8N6gg7FECJ82e", "name": "add_line_item"}]}

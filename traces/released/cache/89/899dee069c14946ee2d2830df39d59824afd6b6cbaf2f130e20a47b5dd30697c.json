@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "I need to first check the current state of the order and then add the line item. Let me start by getting the order details.", "tokens_in": 2812, "tokens_out": 85, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_013kEG3f7C772Xjn9z43BiYB", "name": "get_order"}]}

@@ -204,6 +204,28 @@ def test_run_ids_are_deterministic() -> None:
     assert make_run_id(*args) == make_run_id(*args)
 
 
+def test_run_ids_separate_stochastic_rates() -> None:
+    """Regression: omitting `rate` from the label collapsed all three arms of
+    the rate sweep onto one id, and each overwrote the last."""
+    ids = {
+        make_run_id(
+            "e5", "t1", "naive", "claude-haiku-4-5", 1,
+            FaultSpec(fault_class="partial_write", target="stochastic", rate=rate),
+        )
+        for rate in (0.05, 0.15, 0.3)
+    }
+    assert len(ids) == 3
+
+
+def test_run_ids_separate_fault_params() -> None:
+    """A pre-commit and a post-commit timeout are different experiments."""
+    a = make_run_id("e", "t", "naive", "m", 1,
+                    FaultSpec(fault_class="timeout", params={"committed": True}))
+    b = make_run_id("e", "t", "naive", "m", 1,
+                    FaultSpec(fault_class="timeout", params={"committed": False}))
+    assert a != b
+
+
 def test_run_ids_separate_every_axis() -> None:
     base = ("e1", "task_01", "guarded", "claude-haiku-4-5", 1, None)
     variants = [

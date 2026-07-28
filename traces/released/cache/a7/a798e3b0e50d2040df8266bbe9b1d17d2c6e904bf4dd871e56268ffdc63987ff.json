@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Perfect! The payment was actually processed successfully. The verification read shows that the charge of 15,300 cents was applied. Let me verify the order status is now paid:", "tokens_in": 4806, "tokens_out": 94, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_014zavsbjJ6HxZdzMjbCv4B6", "name": "get_order"}]}

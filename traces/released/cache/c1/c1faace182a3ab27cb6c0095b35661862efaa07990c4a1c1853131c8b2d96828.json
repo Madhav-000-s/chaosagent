@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Great! The Mechanical Keyboard is confirmed at SKU-KEYB with a price of 12900 cents ($129.00). Now let me create the order:", "tokens_in": 2926, "tokens_out": 96, "tool_calls": [{"args": {"customer_id": "cus_1"}, "id": "toolu_01R5rB9FzaFLHoNCKr1VQtRP", "name": "create_order"}]}

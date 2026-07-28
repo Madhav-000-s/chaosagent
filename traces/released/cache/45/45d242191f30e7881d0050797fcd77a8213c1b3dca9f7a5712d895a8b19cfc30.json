@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The payment call had a connection issue, but according to the fault disclosure, the write DID execute. Let me check the current order status to see if the charge went through.", "tokens_in": 4759, "tokens_out": 94, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01H6YD4YbVuSdsMrt4tkPUPD", "name": "get_order"}]}

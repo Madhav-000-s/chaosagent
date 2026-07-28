@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "That's interesting - it seems the order status changed. Let me check the current state and add the line item:", "tokens_in": 3256, "tokens_out": 123, "tool_calls": [{"args": {"order_id": "ord_1", "qty": 2, "sku": "SKU-CABL"}, "id": "toolu_014cy9LVcShjXJ4acwqnugc4", "name": "add_line_item"}]}

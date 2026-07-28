@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "Let me retry getting ord_2 after the rate limit:", "tokens_in": 3541, "tokens_out": 71, "tool_calls": [{"args": {"order_id": "ord_2"}, "id": "toolu_017aFcvxS4Xg2wWFDN2oj1cT", "name": "get_order"}]}

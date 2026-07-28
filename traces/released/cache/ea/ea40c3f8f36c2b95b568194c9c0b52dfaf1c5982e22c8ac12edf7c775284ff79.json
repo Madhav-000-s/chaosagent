@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "ord_1 is reserved with no payment, so I can cancel directly, then reserve and charge ord_2.", "tokens_in": 3928, "tokens_out": 90, "tool_calls": [{"args": {"order_id": "ord_1"}, "id": "toolu_01U3nXQo2Z54CgA6JV7nZSPR", "name": "cancel_order"}]}

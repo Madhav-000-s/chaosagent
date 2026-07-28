@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "The payment charge failed due to a temporary service issue. Let me retry the charge:", "tokens_in": 4024, "tokens_out": 95, "tool_calls": [{"args": {"amount_cents": 25800, "order_id": "ord_2"}, "id": "toolu_015m6T9YoF4z3wvPgEujnxf3", "name": "charge_payment"}]}

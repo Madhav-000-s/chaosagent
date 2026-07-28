@@ -1,0 +1,1 @@
+{"refusal": null, "stop_reason": "tool_use", "text": "I see there was a timeout on the charge payment. Since \"state_may_have_changed\" is true, I need to check the current state of ord_2 to see if the charge actually went through.", "tokens_in": 4349, "tokens_out": 103, "tool_calls": [{"args": {"order_id": "ord_2"}, "id": "toolu_0134E9DsC74mzLhoHdwRTzKf", "name": "get_order"}]}

@@ -389,6 +389,57 @@ def replay(
 
 
 @app.command()
+def report(
+    experiment: str = typer.Option(None, "--experiment", "-e", help="Experiment name."),
+    out: str = typer.Option("results", "--out", help="Output directory."),
+    db: str = typer.Option(None, help="Trace database path."),
+) -> None:
+    """Regenerate every table and figure from the trace store.
+
+    Takes no API key: reporting reads the DuckDB file and nothing else.
+    """
+    from pathlib import Path
+
+    from chaosagent.metrics.report import write_report
+    from chaosagent.metrics.scorer import open_suite
+    from chaosagent.runtime.trace import DEFAULT_DB
+
+    suite, conn = open_suite(db or DEFAULT_DB)
+    try:
+        names = [experiment] if experiment else suite.experiments()
+        if not names:
+            console.print("[yellow]no runs recorded yet — run `chaosagent sweep` first[/yellow]")
+            raise typer.Exit(code=1)
+
+        for name in names:
+            path, figures = write_report(suite, name, Path(out))
+            console.print(f"[green]wrote[/green] {path}  ({suite.run_count(name)} runs)")
+            for figure in figures:
+                console.print(f"       {figure}")
+
+            scr = suite.query("silent_corruption", name)
+            if not scr.empty:
+                table = Table(title=f"{name} · silent corruption rate", header_style="bold")
+                table.add_column("config")
+                for fault in sorted(scr["fault_class"].unique()):
+                    table.add_column(fault, justify="right")
+                for config in sorted(scr["config"].unique()):
+                    rows = scr[scr["config"] == config].set_index("fault_class")
+                    cells = []
+                    for fault in sorted(scr["fault_class"].unique()):
+                        if fault in rows.index:
+                            value = float(rows.loc[fault, "scr"])
+                            colour = "red" if value >= 0.5 else ("yellow" if value > 0 else "green")
+                            cells.append(f"[{colour}]{value:.0%}[/{colour}]")
+                        else:
+                            cells.append("–")
+                    table.add_row(config, *cells)
+                console.print(table)
+    finally:
+        conn.close()
+
+
+@app.command()
 def schema(
     out: str = typer.Option(None, "--out", help="Write to this path instead of stdout."),
 ) -> None:
