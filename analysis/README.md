@@ -36,6 +36,17 @@ python analysis/supporting_figures.py --db traces/chaosagent.duckdb --out result
 
 Experiments with no runs are skipped with a message rather than failing.
 
+## The 2-page write-up
+
+```bash
+python analysis/writeup.py --db traces/released/chaosagent.duckdb
+```
+
+Writes `results/chaosagent-writeup.pdf` — two A4 pages, findings and figure on
+page one, method and limitations on page two. Like everything else here it is a
+pure function of the trace store, so there is no hand-maintained copy of the
+numbers to drift out of date.
+
 ## Why scripts and not notebooks
 
 Notebooks carry committed output that drifts from the code that produced it,

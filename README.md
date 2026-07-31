@@ -84,10 +84,12 @@ the safety mechanism the tool schema exposed. Below the frontier, the interface 
 | ![double execution](results/e6_nonidempotent_double_exec.png) | ![silent corruption heatmap](results/e1_main_heatmap.png) |
 | **Double-execution rate**, one bar per configuration. | **Silent-corruption heatmap**, config × fault class. |
 
-Regenerate every figure and table from the released trace database, with no API key:
+Regenerate every figure, table and the [2-page write-up](results/chaosagent-writeup.pdf) from the
+released trace database, with no API key:
 
 ```bash
 chaosagent report --db traces/released/chaosagent.duckdb --out results/
+python analysis/writeup.py --db traces/released/chaosagent.duckdb
 ```
 
 ---
