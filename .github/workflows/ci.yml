@@ -28,11 +28,21 @@ jobs:
         with:
           enable-cache: true
 
-      - name: Set up Python ${{ matrix.python-version }}
-        run: uv python install ${{ matrix.python-version }}
+      # A venv, not `--system`: the runner's /usr Python is externally managed
+      # and rejects installs, and `uv python install` alone does not make the
+      # requested interpreter active — the 3.11 job silently ran 3.12.
+      - name: Create venv on Python ${{ matrix.python-version }}
+        run: |
+          uv venv --python ${{ matrix.python-version }}
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Install
-        run: uv pip install --system -e ".[dev,run,analysis]"
+        run: uv pip install -e ".[dev,run,analysis]"
+
+      - name: Confirm the interpreter is the one the matrix asked for
+        run: |
+          python -c "import sys; v='.'.join(map(str, sys.version_info[:2])); \
+            assert v == '${{ matrix.python-version }}', f'got {v}'; print('python', v)"
 
       - name: Lint
         run: ruff check .
